@@ -1,6 +1,20 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "./node_modules/expo/tsconfig.base.json",
   "compilerOptions": {
-    "strict": true
-  }
+    "esModuleInterop": true,
+    "module": "esnext", 
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    // Ak ste mali v pôvodnom súbore ďalšie možnosti ako "target" alebo "jsx",
+    // ponechajte ich, inak stačí takto:
+    "target": "es2020",
+    "jsx": "react-native"
+  },
+  "include": [
+    "**/*.ts",  
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx"
+  ]
 }
