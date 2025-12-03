@@ -8,14 +8,14 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-// --- POMOCNÝ KOMPONENT PRE HLAVIČKU ---
+
 const CustomAppHeader = ({ title }: { title: string }) => (
     <View style={styles.appBar}>
         <Text style={styles.appBarTitle}>{title}</Text>
     </View>
 );
 
-// --- FILTER BUTTON KOMPONENT ---
+// filter button komponent
 const FilterButton = ({ 
     label, 
     isActive, 
@@ -47,12 +47,12 @@ export default function HomeScreen() {
 
     const matches = data?.response || data || []; 
 
-    // --- FILTER STATE ---
+    // filter states
     const [selectedLeague, setSelectedLeague] = useState<number | null>(null);
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [showFilters, setShowFilters] = useState(false);
 
-    // --- GET UNIQUE LEAGUES A STATUSES ---
+    // get unique leagues from matches
     const uniqueLeagues = useMemo(() => {
         const leagues = new Map<number, string>();
         matches.forEach((m: any) => {
@@ -65,7 +65,7 @@ export default function HomeScreen() {
 
     const statuses = ['1H', '2H', 'HT', 'FT', 'NS'];
 
-    // --- FILTER MATCHES ---
+    // filtered matches
     const filteredMatches = useMemo(() => {
         let filtered = matches;
 
@@ -86,7 +86,7 @@ export default function HomeScreen() {
         <SafeAreaView style={styles.safeArea}>
             <CustomAppHeader title="LIVE FOOTBALL" />
 
-            {/* --- COMPACT FILTER HEADER --- */}
+            
             <View style={styles.filterHeaderBar}>
                 <View style={styles.filterHeaderContent}>
                     <Text style={styles.matchCount}>
@@ -106,7 +106,7 @@ export default function HomeScreen() {
                     )}
                 </View>
                 
-                {/* TOGGLE FILTERS */}
+                {/* toggle filtre */}
                 <Pressable 
                     onPress={() => setShowFilters(!showFilters)}
                     style={styles.toggleFiltersButton}
@@ -122,7 +122,7 @@ export default function HomeScreen() {
                 </Pressable>
             </View>
 
-            {/* --- EXPANDABLE FILTERS --- */}
+            {/* filter - expand */}
             {showFilters && (
                 <View style={styles.filtersPanel}>
                     {/* LIGY */}
@@ -142,7 +142,7 @@ export default function HomeScreen() {
                         </View>
                     </View>
 
-                    {/* STATUS */}
+                    {/* status */}
                     <View style={styles.filterGroup}>
                         <Text style={styles.filterGroupTitle}>Status zápasu</Text>
                         <View style={styles.filterButtonsGrid}>
@@ -161,7 +161,7 @@ export default function HomeScreen() {
                 </View>
             )}
 
-            {/* --- MATCH LIST --- */}
+            {/* zoznam */}
             <MatchList 
                 matches={filteredMatches} 
                 isLoading={isLoading} 
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
     },
 
-    // --- FILTER HEADER ---
+    // filter header bar
     filterHeaderBar: {
         backgroundColor: '#0f0f11',
         borderBottomWidth: 1,
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
         color: '#00D4FF',
     },
 
-    // --- FILTERS PANEL ---
+    // filters panel
     filtersPanel: {
         backgroundColor: '#0f0f11',
         borderBottomWidth: 1,

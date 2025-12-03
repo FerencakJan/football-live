@@ -8,15 +8,13 @@ import { MOCK_STANDINGS } from '../mock/mockData';
 import { useSession } from '../hooks/useSession';
 import { useMatchDetails } from '../hooks/useMatchDetails'; 
 import { useQueryClient, useQuery } from '@tanstack/react-query';
-// import { IconButton, Card, Title, Subheading, Snackbar } from 'react-native-paper'; // ❌ ODSTRÁNENÉ
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons'; // ⬅️ NOVÝ IMPORT
+import { Ionicons } from '@expo/vector-icons'; 
 import Svg, { Rect, Circle, Text as SvgText } from 'react-native-svg';
 
 const ACCENT = '#00D4FF';
 const REALISTIC_PITCH = require('../../assets/realistic-football-field-with-official-markings-on-the-field-vector.jpg');
 
-// SVG-based jersey marker (uses react-native-svg)
 const JerseySVG = ({ number, color, size = 44 }: { number: string | number; color?: string; size?: number }) => {
     const width = size;
     const height = Math.round(size * 1.06);
@@ -27,20 +25,16 @@ const JerseySVG = ({ number, color, size = 44 }: { number: string | number; colo
     const shoulderR = Math.max(3, Math.floor(size * 0.12));
     return (
         <Svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-            {/* subtle shadow */}
             <Rect x={2} y={4} rx={radius} width={width - 4} height={height - 6} fill={shadowFill} />
-            {/* main jersey */}
             <Rect x={0} y={0} rx={radius} width={width} height={height - 2} fill={fill} stroke={border} strokeWidth={1.4} />
-            {/* shoulders */}
             <Circle cx={Math.round(width * 0.18)} cy={Math.round(shoulderR + 2)} r={shoulderR} fill={fill} />
             <Circle cx={Math.round(width * 0.82)} cy={Math.round(shoulderR + 2)} r={shoulderR} fill={fill} />
-            {/* number */}
             <SvgText x={width / 2} y={Math.round(height * 0.62)} fontSize={Math.max(10, Math.floor(size * 0.36))} fontWeight="900" fill="#ffffff" textAnchor="middle">{String(number)}</SvgText>
         </Svg>
     );
 };
 
-// Load shirt/jersey PNG assets from assets folder
+// Load shirt/jersey PNG 
 let ASSET_SHIRT_BLUE: any = null;
 let ASSET_SHIRT_RED: any = null;
 let ASSET_SHIRT_GREEN: any = null;
@@ -50,7 +44,6 @@ try { ASSET_SHIRT_RED = require('../../assets/shirt_red.png'); } catch (e) { ASS
 try { ASSET_SHIRT_GREEN = require('../../assets/shirt_green.png'); } catch (e) { ASSET_SHIRT_GREEN = null; }
 try { ASSET_SHIRT_YELLOW = require('../../assets/shirt_yellow.png'); } catch (e) { ASSET_SHIRT_YELLOW = null; }
 
-// Image-based shirt with overlayed number; uses local assets when available, otherwise falls back to SVG
 const JerseyImage = ({ number, colorKey, size = 44 }: { number: string | number; colorKey?: 'blue'|'red'|'green'|'yellow'; size?: number }) => {
     const assetMap: Record<string, any> = {
         blue: ASSET_SHIRT_BLUE,
@@ -70,7 +63,7 @@ const JerseyImage = ({ number, colorKey, size = 44 }: { number: string | number;
             </View>
         );
     }
-    // fallback to SVG and tint via colorKey mapping
+    // fallback pre SVG
     const color = colorKey === 'red' ? '#ff6b6b' : colorKey === 'green' ? '#4ECDC4' : colorKey === 'yellow' ? '#FFE66D' : '#95E1D3';
     return <JerseySVG number={number} color={color} size={size} />;
 };
@@ -80,7 +73,7 @@ type Favorite = { id: number; match_id: string; user_id: string; [key: string]: 
 
 // --- POMOCNÉ KOMPONENTY ---
 
-// Zobrazenie udalostí (Góly, Karty)
+// Zobrazenie udalostí
 const EventTimeline = ({ events }: { events: any[] }) => {
     if (!events || events.length === 0) return <Text style={styles.eventText}>Žiadne udalosti zápasu.</Text>;
 
@@ -128,9 +121,7 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
 
     const selectedLineup = selected === 'home' ? homeLineup : awayLineup;
 
-    // Compute starter positions from formation string (e.g. '4-4-2').
-    // This version computes positions directly in the VISIBLE pitch area (top..bottom of the cropped image)
-    // so players are spread across the visible section and don't bunch at the bottom.
+ 
     const computePositions = (formationLabel?: string, startersCount = 11) => {
         const defaultCounts = [4, 4, 2];
         let counts = defaultCounts;
@@ -140,13 +131,12 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
         }
 
         const positions: Array<{ x: number; y: number }> = [];
-        // We'll work in VISIBLE coordinates where 0% = top of the visible crop and 100% = bottom.
-        // Place GK higher so it's visible; adjust y range to 8..82 to fit all players comfortably.
+   
         positions.push({ x: 50, y: 85 });
 
         const lines = counts.length;
-        const yStartVis = 65; // defenders line
-        const yEndVis = 18;   // forwards line (moved higher to fit goalkeeper label)
+        const yStartVis = 65; 
+        const yEndVis = 18;  
         const yStep = lines > 1 ? (yStartVis - yEndVis) / (lines - 1) : 0;
 
         for (let line = 0; line < lines; line++) {
@@ -155,8 +145,8 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
             if (n === 1) {
                 positions.push({ x: 50, y });
             } else {
-                const left = 15; // left margin percentage (increased from 8)
-                const span = 70; // usable width percentage (decreased from 84)
+                const left = 15; 
+                const span = 70; 
                 const step = n > 1 ? span / (n - 1) : 0;
                 for (let i = 0; i < n; i++) {
                     const x = Math.round(left + i * step);
@@ -165,12 +155,12 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
             }
         }
 
-        // If positions less than startersCount, fill center positions
+   
         while (positions.length < startersCount) positions.push({ x: 50, y: 50 });
         return positions.slice(0, startersCount);
     };
 
-    // Generate a color for each player based on position for visual distinction
+  
     const getPlayerColor = (player: any, idx: number) => {
         const positionColors: Record<string, string> = {
             'G': '#FF6B6B', // Goalkeeper - Red
@@ -179,12 +169,12 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
             'F': '#95E1D3', // Forward - Mint
         };
         const pos = player.pos || 'M';
-        return positionColors[pos] || '#00D4FF'; // Fallback accent color
+        return positionColors[pos] || '#00D4FF'; 
     };
 
     const renderStarterOnPitch = (player: any, idx: number, positions: any[]) => {
         const pos = positions[idx] ?? { x: 50, y: 50 };
-        // positions are already in VISIBLE coordinates (0..100 from top to bottom of the cropped image)
+    
         const visibleY = Math.max(6, Math.min(90, pos.y));
         const markerColor = getPlayerColor(player, idx);
             const nameParts = player.player.name?.split(' ') || ['?'];
@@ -224,8 +214,7 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
             </View>
 
             <View style={styles.pitchContainer}>
-                {/* The Image is positioned absolute and scaled to 200% height while anchored at the bottom.
-                    The container has overflow:hidden so only the bottom half is visible. */}
+             
                 <Image source={REALISTIC_PITCH} style={styles.pitchFullImage} />
                 <View style={styles.pitchArea} pointerEvents="box-none">
                     {(() => {
@@ -242,7 +231,7 @@ const LineupsSection = ({ lineups }: { lineups: any[] }) => {
     );
 };
 
-// League table component (reads from mock data)
+// league table component
 const LeagueTable = ({ leagueId, leagueName, highlightIds }: { leagueId: number; leagueName?: string; highlightIds: number[] }) => {
     const standings = MOCK_STANDINGS[leagueId] ?? [];
     if (!standings || standings.length === 0) return null;
@@ -252,20 +241,20 @@ const LeagueTable = ({ leagueId, leagueName, highlightIds }: { leagueId: number;
         const homeId = highlightIds?.[0];
         const awayId = highlightIds?.[1];
 
-        // Remove existing entries for the two teams so we can re-insert them at chosen ranks
+  
         const homeIdx = rows.findIndex((r: any) => r.team?.id === homeId);
         const awayIdx = rows.findIndex((r: any) => r.team?.id === awayId);
         const homeRow = homeIdx >= 0 ? rows.splice(homeIdx, 1)[0] : { team: { id: homeId, name: 'Home' }, points: 0 };
-        // If away index changed due to splice, find again
+  
         const awayIdxAfter = rows.findIndex((r: any) => r.team?.id === awayId);
         const awayRow = awayIdxAfter >= 0 ? rows.splice(awayIdxAfter, 1)[0] : { team: { id: awayId, name: 'Away' }, points: 0 };
 
-        // Insert home at 1st position and away at 4th position (index 3)
+       
         rows.splice(0, 0, { ...homeRow, rank: 1 });
         const insertIndex = Math.min(3, rows.length);
         rows.splice(insertIndex, 0, { ...awayRow, rank: insertIndex + 1 });
 
-        // Recompute ranks for display
+        // recalculate ranks
         return rows.map((r: any, i: number) => ({ ...r, rank: i + 1 }));
     }, [standings, highlightIds]);
 
@@ -291,7 +280,7 @@ const LeagueTable = ({ leagueId, leagueName, highlightIds }: { leagueId: number;
     );
 };
 
-// --- HLAVNÝ KOMPONENT ---
+// main component
 
 export default function MatchDetail() {
     const route = useRoute<any>();
@@ -300,7 +289,6 @@ export default function MatchDetail() {
     const queryClient = useQueryClient();
     const fixtureId = String(match.fixture.id);
 
-    // Odstránený stav pre Snackbar
 
     const { events, lineups, isLoading: isDetailsLoading, isError: isDetailsError } = useMatchDetails(fixtureId);
 
@@ -316,7 +304,7 @@ export default function MatchDetail() {
     );
     const isFavorite = !!favoriteItem;
 
-    // Toggler Obľúbených
+    // toggle favorite status
     const toggleFavorite = async () => {
         if (!session) {
             Alert.alert('Prihláste sa', 'Pre uloženie obľúbených zápasov sa musíte prihlásiť.');
@@ -337,7 +325,7 @@ export default function MatchDetail() {
             
             queryClient.refetchQueries({ queryKey: ['favorites'] });
             
-            // ⬅️ Nahradenie Snackbar Alertom
+            // alert namiesto Snackbar
             Alert.alert('Úspech', message); 
         } catch (error: any) {
             queryClient.invalidateQueries({ queryKey: ['favorites'] });
@@ -352,9 +340,9 @@ export default function MatchDetail() {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-                {/* Header - Modernný dizajn bez rámčeka */}
+         
                 <View style={styles.headerSection}>
-                    {/* Liga info s favoritom */}
+             
                     <View style={styles.leagueHeader}>
                         <View>
                             <Text style={styles.leagueName}>{match.league.name}</Text>
@@ -373,7 +361,7 @@ export default function MatchDetail() {
                         </Pressable>
                     </View>
 
-                    {/* Skóre - Centrálne */}
+          
                     <View style={styles.scoreSection}>
                         <View style={styles.teamBlock}>
                             <Image source={{ uri: home.logo }} style={styles.teamLogo} />
@@ -392,7 +380,7 @@ export default function MatchDetail() {
                         </View>
                     </View>
 
-                    {/* Status */}
+                  
                     <View style={styles.statusBar}>
                         <Text style={styles.statusText}>
                             {statusText} {match.fixture.status.elapsed ? `· ${match.fixture.status.elapsed}'` : ''}
@@ -422,7 +410,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#0a0a0a',
     },
 
-    // --- HEADER SECTION ---
+    // header section
     headerSection: {
         backgroundColor: '#0f0f11',
         paddingHorizontal: 16,
@@ -531,12 +519,12 @@ const styles = StyleSheet.create({
         letterSpacing: 0.3,
     },
 
-    // --- CONTENT SECTION ---
+    // content section
     contentSection: {
         paddingBottom: 40,
     },
 
-    // --- SECTIONS (GENERAL) ---
+    // section styles
     section: {
         marginHorizontal: 12,
         marginTop: 16,
@@ -564,7 +552,7 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
     },
 
-    // --- EVENTS TIMELINE ---
+    // event timeline 
     eventRowAlt: {
         flexDirection: 'row',
         paddingVertical: 12,
@@ -622,7 +610,7 @@ const styles = StyleSheet.create({
         color: '#ccc',
     },
 
-    // --- LINEUPS SECTION ---
+    // lineups section
     lineupToggleRow: {
         flexDirection: 'row',
         marginBottom: 16,
@@ -759,7 +747,7 @@ const styles = StyleSheet.create({
         marginTop: 6,
     },
 
-    // --- LEAGUE TABLE ---
+    // league table
     tableHeader: {
         flexDirection: 'row',
         paddingVertical: 10,

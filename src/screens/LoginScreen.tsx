@@ -2,12 +2,11 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert, Text, TouchableOpacity, TextInput } from 'react-native';
-// import { TextInput, Button, Title, Subheading } from 'react-native-paper'; // ❌ ODSTRÁNENÉ
 import { signIn, signUp } from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// --- POMOCNÝ KOMPONENT PRE TLAČIDLO ---
+// pomocné komponenty pre tlačidlo
 const CustomButton = ({ title, onPress, mode = 'contained', color, disabled }: any) => (
     <TouchableOpacity 
         onPress={onPress} 
@@ -65,10 +64,10 @@ export default function LoginScreen() {
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
-                <Text style={styles.title}>⚽ FOOTBALL APP</Text> {/* ⬅️ Text namiesto Title */}
-                <Text style={styles.subtitle}>Prihláste sa alebo pokračujte</Text> {/* ⬅️ Text namiesto Subheading */}
+                <Text style={styles.title}>⚽ FOOTBALL APP</Text> 
+                <Text style={styles.subtitle}>Prihláste sa alebo pokračujte</Text> 
 
-                {/* 1. VSTUPY */}
+            
                 <TextInput 
                     placeholder="Email" 
                     placeholderTextColor="#888"
@@ -88,13 +87,13 @@ export default function LoginScreen() {
                     style={styles.input} 
                 />
 
-                {/* 2. TLAČIDLÁ PRIHLÁSENIA/REGISTRÁCIE */}
+            
                 <CustomButton 
                     title={loading ? "Prebieha..." : "Prihlásiť sa"} 
                     onPress={handleLogin} 
                     disabled={loading}
                     style={styles.button}
-                    color="#FF0057" // Primary akcent farba
+                    color="#FF0057" 
                 />
 
                 <CustomButton 
@@ -103,10 +102,10 @@ export default function LoginScreen() {
                     onPress={handleSignUp} 
                     disabled={loading}
                     style={styles.button}
-                    color="#bbb" // Šedá farba
+                    color="#bbb" 
                 />
                 
-                {/* 3. TLAČIDLO HOSŤ */}
+                
                 <View style={styles.separatorContainer}>
                     <Text style={styles.separatorText}>--- ALEBO ---</Text>
                 </View>
@@ -130,20 +129,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         padding: 20,
     },
-    title: { // ⬅️ Natívny Text
+    title: { 
         fontSize: 32,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
         marginBottom: 5,
     },
-    subtitle: { // ⬅️ Natívny Text
+    subtitle: { 
         fontSize: 16,
         color: '#bbb',
         textAlign: 'center',
         marginBottom: 40,
     },
-    input: { // ⬅️ Natívny TextInput
+    input: { 
         marginBottom: 15,
         backgroundColor: '#2c2c2c',
         color: '#eee',
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
         borderColor: '#444'
     },
     
-    // ⬅️ VLASTNÉ TLAČIDLÁ (CustomButton)
+    // vlastné tlačidlo 
     buttonBase: {
         marginVertical: 8,
         borderRadius: 8,
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
         opacity: 0.5,
     },
 
-    button: { // Ponechané pre štýl marže
+    button: { 
         marginVertical: 8,
     },
     separatorContainer: {

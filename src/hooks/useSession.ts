@@ -8,19 +8,19 @@ export function useSession() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Získame aktuálnu session
+    // Aktuálna session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);
     });
 
-    // 2. Nastavíme listener na zmeny stavu
+    // Nastavenie listener na zmeny stavu
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setLoading(false);
     });
     
-    // 3. Clean-up: Teraz voláme unsubscribe na objekte 'subscription'
+    //Voláme unsubscribe na objekte 'subscription'
     return () => {
       subscription?.unsubscribe(); 
     };

@@ -14,12 +14,16 @@ import { USE_REAL_API } from '../config';
 // --- FUNKCIE PRE API / MOCK ---
 
 export const fetchLiveMatches = async () => {
+  
     if (!USE_REAL_API) {
-        // When mock mode is active, the hook `useMatches` will provide `MOCK_FIXTURES`.
+       
         throw new Error('API is disabled (mock mode). useMatches will return mock fixtures.');
     }
+    console.log('USE_REAL_API:', USE_REAL_API);
     const res = await api.get('/fixtures', { params: { live: 'all' } });
+    console.log('API response:', res.data.response);
     return res.data.response;
+    
 };
 
 export const fetchMatchById = async (id: string) => {
@@ -29,10 +33,10 @@ export const fetchMatchById = async (id: string) => {
 
 export const fetchMatchEvents = async (fixtureId: string) => {
     if (!USE_REAL_API) {
-        // ✅ Dynamická kontrola ID v Mock móde
+        //Dynamická kontrola ID v Mock móde
         switch (fixtureId) {
             case '1000001':
-                return MOCK_EVENTS_1000001; // Používame premenované konštanty
+                return MOCK_EVENTS_1000001; //premenované konštanty
             case '1000006':
                 return MOCK_EVENTS_1000006;
             default:
@@ -48,10 +52,10 @@ export const fetchMatchEvents = async (fixtureId: string) => {
 
 export const fetchMatchLineups = async (fixtureId: string) => {
     if (!USE_REAL_API) {
-        // ✅ Dynamická kontrola ID v Mock móde
+        //Dynamická kontrola ID v Mock móde
         switch (fixtureId) {
             case '1000001':
-                return MOCK_LINEUPS_1000001; // Používame premenované konštanty
+                return MOCK_LINEUPS_1000001; //premenované konštanty
             case '1000006':
                 return MOCK_LINEUPS_1000006;
             default:

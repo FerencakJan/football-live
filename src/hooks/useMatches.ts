@@ -3,8 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchLiveMatches } from '../api/footballApi';
 import { MOCK_FIXTURES } from '../mock/mockData'; // ✅ Import mock dát
-import { USE_REAL_API } from '../config';
-
+export const USE_REAL_API = process.env.EXPO_PUBLIC_USE_REAL_API === 'true';
 export function useMatches() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['liveMatches'],

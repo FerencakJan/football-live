@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "football-live",
-    "slug": "football-live",
+    "slug": "football-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,6 +26,12 @@
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "27242902-8519-49f4-984a-faff9e509afb"
+      }
+    },
+    "owner": "ferencakdev"
   }
 }
