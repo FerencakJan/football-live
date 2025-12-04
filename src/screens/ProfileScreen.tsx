@@ -1,8 +1,6 @@
 // src/screens/ProfileScreen.tsx
-
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
-// import { Button, Appbar, Title, Divider } from 'react-native-paper'; // ❌ ODSTRÁNENÉ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '../hooks/useSession';
 import { signOut } from '../hooks/useAuth';
@@ -12,7 +10,7 @@ import MatchCard from '../components/MatchCard';
 import { useQueryClient } from '@tanstack/react-query';
 import { Ionicons } from '@expo/vector-icons'; // ⬅️ NOVÝ IMPORT PRE IKONY
 
-// --- POMOCNÉ KOMPONENTY ---
+// pomocná komponenta pre vlastnú hlavičku
 
 const CustomHeader = ({ title }: { title: string }) => (
     <View style={styles.appBar}>
@@ -36,7 +34,7 @@ const CustomButton = ({ title, onPress, mode = 'contained', color, style }: any)
     </TouchableOpacity>
 );
 
-// --- HLAVNÝ KOMPONENT ---
+// hlavný komponent obrazovky profilu
 
 export default function ProfileScreen() {
     const { session, loading: sessionLoading } = useSession();
@@ -98,7 +96,7 @@ export default function ProfileScreen() {
                     <Text style={styles.emailText}>Prihlásený ako: {session.user.email}</Text>
                 </View>
 
-                <View style={styles.divider} /> {/* ⬅️ Natívny Divider */}
+                <View style={styles.divider} /> 
 
                 <Text style={styles.favoritesTitle}>
                     <Ionicons name="star" size={18} color="#FF0057" /> Moje Obľúbené Zápasy ({favorites?.length || 0})
@@ -133,7 +131,7 @@ export default function ProfileScreen() {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <CustomHeader title="Profil / Obľúbené" /> {/* ⬅️ Vlastná Hlavička */}
+            <CustomHeader title="Profil / Obľúbené" /> 
             {renderContent()}
         </SafeAreaView>
     );

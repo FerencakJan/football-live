@@ -10,15 +10,10 @@ console.log('DEBUG: MainTabs', !!MainTabs);
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  // Odstránili sme useSession/isLoading kontrolu,
-  // aby sme umožnili Guest Mode. Začíname na Login screen.
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Auth">
-        {/* Prvá obrazovka je LoginScreen, kde sa dá pokračovať bez prihlásenia */}
         <Stack.Screen name="Auth" component={LoginScreen} />
-        {/* Po prihlásení / kliknutí na "Pokračovať bez" sa navigujeme sem */}
         <Stack.Screen name="MainTabs" component={MainTabs} />
       </Stack.Navigator>
     </NavigationContainer>

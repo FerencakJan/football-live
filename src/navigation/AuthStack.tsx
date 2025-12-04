@@ -9,7 +9,6 @@ export default function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
-      {/* Ak by ste mali RegisterScreen samostatne, pridáte ho sem */}
     </Stack.Navigator>
   );
 }

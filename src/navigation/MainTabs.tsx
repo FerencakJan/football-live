@@ -29,7 +29,7 @@ export default function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false, // Hlavičku necháme v HomeStackScreen
-        tabBarActiveTintColor: '#FF0057', // Ružová pre moderný akcent
+        tabBarActiveTintColor: '#FF0057', 
         tabBarInactiveTintColor: 'gray',
       })}
     >
